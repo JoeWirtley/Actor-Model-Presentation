@@ -2,6 +2,7 @@
 using System.Linq;
 using Akka.Actor;
 using PipelineActors.Messages;
+using static System.Console;
 
 namespace PipelineDemo {
    public class SafetyWarningListener: UntypedActor {
@@ -14,12 +15,19 @@ namespace PipelineDemo {
       }
 
       private void ShowResults( SafetyNotification safetyNotification ) {
-         Console.CursorLeft = 0;
-         Console.CursorTop = 2;
+         CursorLeft = 0;
+         CursorTop = 2;
 
-         Console.WriteLine( safetyNotification.Message );
+         WriteLine( safetyNotification.Message + "\n" );
+
+         WriteLine("Sensor ID\tTemp\tUpdated");
          foreach ( var temperature in safetyNotification.Temperatures.OrderBy( x => x.Key.ToString() ) ) {
-            Console.WriteLine( $"{temperature.Key}\t{temperature.Value.Value:N0}\t{temperature.Value.Update}" );
+            Write( $"{temperature.Key}\t" );
+            double value = temperature.Value.Value;
+            using ( new ScopedConsoleColor( value > 200 ? ConsoleColor.Yellow: ConsoleColor.White  )) {
+               Write( $"{temperature.Value.Value:N0}\t" );
+            }
+            WriteLine( $"{temperature.Value.Update}" );
          }
       }
 
@@ -27,4 +35,19 @@ namespace PipelineDemo {
          return Akka.Actor.Props.Create( () => new SafetyWarningListener() );
       }
    }
+
+   public class ScopedConsoleColor:IDisposable {
+      private readonly ConsoleColor _oldColor;
+
+      public ScopedConsoleColor( ConsoleColor newColor ) {
+         _oldColor = ForegroundColor;
+
+         ForegroundColor = newColor;
+      }
+
+      public void Dispose() {
+         ForegroundColor = this._oldColor;
+      }
+   }
+
 }

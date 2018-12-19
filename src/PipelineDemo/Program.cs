@@ -15,9 +15,10 @@ namespace PipelineDemo {
             IActorRef listener = system.ActorOf( SafetyWarningListener.Props(), "safety-listener" );
             safetyEvaluator.Tell(  new SubscribeToNotificationsRequest( new CorrelationId() ), listener );
 
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine( "Press 'q' to quit" );
 
-            await CreateFakeSensorInput( sensorArea );
+            await CreateFakeSensorInput( sensorArea, TimeSpan.FromSeconds( 1 ) );
 
             while ( true ) {
                ConsoleKeyInfo cmd = Console.ReadKey();
@@ -29,11 +30,11 @@ namespace PipelineDemo {
          }
       }
 
-      private static async Task CreateFakeSensorInput( IActorRef sensorArea ) {
+      private static async Task CreateFakeSensorInput( IActorRef sensorArea, TimeSpan generateTimeSpan ) {
          for ( int i = 1; i < 6; i++ ) {
             var source = new SensorSource( i, sensorArea );
             await source.AddSensor();
-            source.Start();
+            source.Start( generateTimeSpan );
          }
       }
    }

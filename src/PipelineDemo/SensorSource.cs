@@ -13,7 +13,7 @@ namespace PipelineDemo {
       private IActorRef _sensor;
       private Timer _timer;
 
-      public SensorSource( int sensorId, IActorRef sensorArea ) {
+      public SensorSource( int sensorId, IActorRef sensorArea) {
          _sensorId = sensorId;
          _sensorArea = sensorArea;
          _randomTemperatureGenerator = new Random();
@@ -25,8 +25,8 @@ namespace PipelineDemo {
          _sensor = response.TemperatureSensor;
       }
 
-      public void Start() {
-         _timer = new Timer( UpdateTemperature, null, 0, 500 );
+      public void Start( TimeSpan updateEveryMilliseconds ) {
+         _timer = new Timer( UpdateTemperature,null,TimeSpan.Zero, updateEveryMilliseconds );
       }
 
       private void UpdateTemperature( object sender ) {
