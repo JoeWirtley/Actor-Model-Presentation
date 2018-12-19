@@ -87,6 +87,9 @@ namespace PipelineActors.Tests {
          var received = replyTo.ExpectMsg<SafetyEvaluationResult>();
          received.RequiresNotification.Should().BeTrue();
          received.Message.Should().Be( "Temperature exceeds 200 degrees" );
+         received.Temperatures.Should().HaveCount( 2 );
+         received.Temperatures[ id1 ].Value.Should().Be( 250 );
+         received.Temperatures[ id2 ].Value.Should().Be( 100 );
       }
 
       private IActorRef CreateEvaluate( IActorRef temperatureSource, IActorRef replyTo = null ) {

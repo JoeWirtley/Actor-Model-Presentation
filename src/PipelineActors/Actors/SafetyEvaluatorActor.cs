@@ -27,7 +27,7 @@ namespace PipelineActors.Actors {
       }
 
       protected override void OnReceive( object message ) {
-         Become( Idle );
+         Idle( message );
       }
 
       private void Idle( object message ) {
@@ -73,7 +73,6 @@ namespace PipelineActors.Actors {
                HandleEvaluationResult( m );
                break;
          }
-
       }
 
       private void AddSubscriber( SubscribeToNotificationsRequest m ) {
@@ -83,12 +82,12 @@ namespace PipelineActors.Actors {
 
       private void HandleEvaluationResult( SafetyEvaluationResult evaluationResult) {
          if ( evaluationResult.RequiresNotification ) {
-            var warning = new SafetyNotification( evaluationResult.Message );
+            var warning = new SafetyNotification( evaluationResult.Message, evaluationResult.Temperatures );
             foreach ( var subscriber in _subscribers ) {
                subscriber.Tell( warning );
             }
          }
-         Become( Idle );
+         Become( OnReceive );
          Stash.UnstashAll();
       }
 

@@ -13,5 +13,9 @@
       public static implicit operator SensorIdentifier( int value ) {
          return new SensorIdentifier( value );
       }
+
+      public override string ToString() {
+         return $"Sensor {Value}";
+      }
    }
 }

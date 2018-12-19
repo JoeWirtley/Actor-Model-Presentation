@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Akka.Actor;
 using PipelineActors.Messages;
@@ -42,8 +43,14 @@ namespace PipelineActors.Actors {
       }
 
       private void PerformEvaluation() {
+         var temperatures =
+         _results.ToDictionary( 
+            item => item.Key, 
+            item => new SafetyEvaluationResult.Temperature( item.Value.Temperature, item.Value.Updated ) )
+            .ToImmutableDictionary();
+
          if ( _results.Values.Any( response => response.Temperature > 200 ) ) {
-            _replyTo.Tell( new SafetyEvaluationResult( "Temperature exceeds 200 degrees" ) );
+            _replyTo.Tell( new SafetyEvaluationResult( "Temperature exceeds 200 degrees", temperatures ) );
          } else {
             _replyTo.Tell( new SafetyEvaluationResult() );
          }
