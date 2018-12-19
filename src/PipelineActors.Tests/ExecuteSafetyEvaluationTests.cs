@@ -11,7 +11,7 @@ using PipelineActors.Support;
 
 namespace PipelineActors.Tests {
    [TestFixture]
-   public class EvaluateSafetyTests: TestKit {
+   public class ExecuteSafetyEvaluationTests: TestKit {
       [Test]
       public void ShouldRequestAllSensorsWhenCreated() {
          var probe = CreateTestProbe();
@@ -90,7 +90,7 @@ namespace PipelineActors.Tests {
       }
 
       private IActorRef CreateEvaluate( IActorRef temperatureSource, IActorRef replyTo = null ) {
-         return Sys.ActorOf( EvaluateSafetyActor.Props( temperatureSource, replyTo ) );
+         return Sys.ActorOf( ExecuteSafetyEvaluationActor.Props( temperatureSource, replyTo ) );
       }
    }
 }

@@ -69,7 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EvaluateSafetyTests.cs" />
+    <Compile Include="ExecuteSafetyEvaluationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SafetyEvaluatorTests.cs" />
     <Compile Include="SensorAreaTests.cs" />

@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\EvaluateSafetyActor.cs" />
+    <Compile Include="Actors\ExecuteSafetyEvaluationActor.cs" />
     <Compile Include="Actors\SafetyEvaluatorActor.cs" />
     <Compile Include="Actors\SensorAreaActor.cs" />
     <Compile Include="Messages\GetAllSensorsRequest.cs" />

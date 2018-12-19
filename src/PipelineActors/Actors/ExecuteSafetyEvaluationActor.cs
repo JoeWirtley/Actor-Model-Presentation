@@ -5,13 +5,13 @@ using PipelineActors.Messages;
 using PipelineActors.Support;
 
 namespace PipelineActors.Actors {
-   public class EvaluateSafetyActor: UntypedActor {
+   public class ExecuteSafetyEvaluationActor: UntypedActor {
       private readonly IActorRef _temperatureDataSource;
       private readonly IActorRef _replyTo;
       private readonly Dictionary<SensorIdentifier, QueryTemperatureResponse> _results;
       private readonly HashSet<SensorIdentifier> _toQuery;
 
-      public EvaluateSafetyActor( IActorRef temperatureDataSource, IActorRef replyTo ) {
+      public ExecuteSafetyEvaluationActor( IActorRef temperatureDataSource, IActorRef replyTo ) {
          _temperatureDataSource = temperatureDataSource;
          _replyTo = replyTo;
          _results = new Dictionary<SensorIdentifier, QueryTemperatureResponse>();
@@ -19,7 +19,7 @@ namespace PipelineActors.Actors {
       }
 
       protected override void PreStart() {
-         _temperatureDataSource.Tell( new GetAllSensorsRequest( new CorrelationId() ) );
+         _temperatureDataSource.Tell( new GetAllSensorsRequest() );
       }
 
       protected override void OnReceive( object message ) {
@@ -27,23 +27,21 @@ namespace PipelineActors.Actors {
             case GetAllSensorsResponse m:
                foreach ( var sensor in m.Sensors ) {
                   _toQuery.Add( sensor.Key );
-                  sensor.Value.Tell( new QueryTemperatureRequest( new CorrelationId() ) );
+                  sensor.Value.Tell( new QueryTemperatureRequest() );
                }
-
                break;
 
             case QueryTemperatureResponse m:
                _results.Add( m.SensorId, m );
                _toQuery.Remove( m.SensorId );
                if ( _toQuery.Count == 0 ) {
-                  Evaluate();
+                  PerformEvaluation();
                }
-
                break;
          }
       }
 
-      private void Evaluate() {
+      private void PerformEvaluation() {
          if ( _results.Values.Any( response => response.Temperature > 200 ) ) {
             _replyTo.Tell( new SafetyEvaluationResult( "Temperature exceeds 200 degrees" ) );
          } else {
@@ -54,6 +52,6 @@ namespace PipelineActors.Actors {
       }
 
       public static Props Props( IActorRef temperatureSource, IActorRef replyTo ) =>
-         Akka.Actor.Props.Create( () => new EvaluateSafetyActor( temperatureSource, replyTo ) );
+         Akka.Actor.Props.Create( () => new ExecuteSafetyEvaluationActor( temperatureSource, replyTo ) );
    }
 }

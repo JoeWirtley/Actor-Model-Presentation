@@ -14,7 +14,7 @@ namespace PipelineActors.Actors {
          _areaActor = areaActor;
          _subscribers = new HashSet<IActorRef>();
          if ( createEvaluation == null ) {
-            CreateEvaluationActor = () => Context.ActorOf( EvaluateSafetyActor.Props( _areaActor, Self ) );
+            CreateEvaluationActor = () => Context.ActorOf( ExecuteSafetyEvaluationActor.Props( _areaActor, Self ) );
          } else {
             CreateEvaluationActor = createEvaluation;
          }
@@ -27,6 +27,10 @@ namespace PipelineActors.Actors {
       }
 
       protected override void OnReceive( object message ) {
+         Become( Idle );
+      }
+
+      private void Idle( object message ) {
          switch ( message ) {
             case SubscribeToNotificationsRequest m:
                AddSubscriber( m );
@@ -84,7 +88,7 @@ namespace PipelineActors.Actors {
                subscriber.Tell( warning );
             }
          }
-         Become( OnReceive );
+         Become( Idle );
          Stash.UnstashAll();
       }
 
