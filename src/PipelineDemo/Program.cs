@@ -32,9 +32,8 @@ namespace PipelineDemo {
 
       private static async Task CreateFakeSensorInput( IActorRef sensorArea, TimeSpan generateTimeSpan ) {
          for ( int i = 1; i < 6; i++ ) {
-            var source = new SensorSource( i, sensorArea );
-            await source.AddSensor();
-            source.Start( generateTimeSpan );
+            var source = new SensorDataSource( i, sensorArea );
+            await source.Start( generateTimeSpan );
          }
       }
    }
