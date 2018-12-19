@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using Akka.Actor;
 using PipelineActors.Messages;
 using PipelineActors.Support;
@@ -38,8 +39,8 @@ namespace PipelineActors.Actors {
                }
                break;
 
-            default:
-               Unhandled( message );
+            case GetAllSensorsRequest m:
+               Sender.Tell( new GetAllSensorsResponse( m.CorrelationId, _sensors.ToImmutableDictionary() )  );
                break;
          }
       }

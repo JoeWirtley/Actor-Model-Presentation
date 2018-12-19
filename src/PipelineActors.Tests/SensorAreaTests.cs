@@ -80,6 +80,24 @@ namespace PipelineActors.Tests {
          received.Updated.Should().Be( expectedUpdated );
       }
 
+      [Test]
+      public void ShouldRespondToGetAllSensorsRequest() {
+         var probe = CreateTestProbe();
+         var area = CreateTestArea( "North" );
+
+         AddSensorToArea( area, 1 );
+         AddSensorToArea( area, 2 );
+         AddSensorToArea( area, 3 );
+
+         var correlationId = new CorrelationId();
+         area.Tell( new GetAllSensorsRequest( correlationId ), probe.Ref );
+
+         var received = probe.ExpectMsg<GetAllSensorsResponse>();
+         received.CorrelationId.Should().Be( correlationId );
+         received.Sensors.Should().HaveCount( 3 );
+         received.Sensors.Keys.Should().BeEquivalentTo( new SensorIdentifier( 1 ), new SensorIdentifier( 2 ), new SensorIdentifier( 3 ) );
+      }
+
       private IActorRef CreateTestArea( AreaIdentifier areaIdentifier = null ) {
          if ( areaIdentifier is null ) {
             areaIdentifier = new AreaIdentifier( "North" );
@@ -87,5 +105,14 @@ namespace PipelineActors.Tests {
 
          return Sys.ActorOf( SensorAreaActor.Props( areaIdentifier ) );
       }
+
+      private IActorRef AddSensorToArea( IActorRef area, SensorIdentifier sensorId ) {
+         var probe = CreateTestProbe();
+         area.Tell( new AddSensorRequest( new CorrelationId(), sensorId ), probe );
+         IActorRef addedSensor = null;
+         probe.ExpectMsg<AddSensorResponse>( response => addedSensor = response.TemperatureSensor );
+         return addedSensor;
+      }
+
    }
 }

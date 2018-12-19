@@ -37,10 +37,6 @@ namespace PipelineActors.Actors {
                _subscribers.Add( Sender );
                Sender.Tell( new SubscribeToUpdatesResponse( m.CorrelationId ) );
                break;
-
-            default:
-               Unhandled( message );
-               break;
          }
       }
 

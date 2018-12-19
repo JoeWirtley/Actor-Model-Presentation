@@ -51,8 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\EvaluateSafetyActor.cs" />
     <Compile Include="Actors\SafetyEvaluatorActor.cs" />
     <Compile Include="Actors\SensorAreaActor.cs" />
+    <Compile Include="Messages\GetAllSensorsRequest.cs" />
+    <Compile Include="Messages\GetAllSensorsResponse.cs" />
+    <Compile Include="Messages\SafetyEvaluationResult.cs" />
     <Compile Include="Messages\SafetyNotification.cs" />
     <Compile Include="Messages\SubscribeToNotificationsResponse.cs" />
     <Compile Include="Messages\SubscribeToNotificationsRequest.cs" />

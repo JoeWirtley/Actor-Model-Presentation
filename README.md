@@ -7,3 +7,4 @@ This code is meant to illustrate how the actor model may be useful. It is not me
 * SensorAreaActor currently subscribes to temperature updates from sensors, but does not see if that subscription is successful.
 * SensorAreaActor does not watch for sensors that may die.
 * SensorAreaActor has no way to remove sensors
+* EvaluateSafetyActor needs a timeout in case it does not get temperatures, or times out during the calculation.
