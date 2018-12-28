@@ -24,4 +24,4 @@ This code is meant to illustrate how the actor model may be useful. It is not pr
 ## Resources
 This sample takes inspiration from the Pluralsight course from [Jason Roberts](https://www.pluralsight.com/authors/jason-roberts): [Representing IoT Systems with the Actor Model and Akka.NET](https://www.pluralsight.com/courses/actor-model-akka-dotnet).  I highly recommend this course and all of Jason's Akka.NET Pluralsight courses.
 
-The main sight for Akka.NET is [here](https://getakka.net/).
+The main site for Akka.NET is [here](https://getakka.net/).
