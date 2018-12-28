@@ -10,7 +10,7 @@ namespace PipelineDemo {
       static async Task Main() {
          using ( var system = ActorSystem.Create( "pipeline" ) ) {
             IActorRef sensorArea = system.ActorOf( SensorAreaActor.Props( "North"), "north-area" );
-            IActorRef safetyEvaluator = system.ActorOf( SafetyEvaluatorActor.Props( sensorArea ) );
+            IActorRef safetyEvaluator = system.ActorOf( SafetyEvaluatorActor.Props( sensorArea ), "safety-evaluator" );
 
             IActorRef listener = system.ActorOf( SafetyWarningListener.Props(), "safety-listener" );
             safetyEvaluator.Tell(  new SubscribeToNotificationsRequest( new CorrelationId() ), listener );
