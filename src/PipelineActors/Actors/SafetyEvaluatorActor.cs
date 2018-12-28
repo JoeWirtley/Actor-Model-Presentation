@@ -51,7 +51,7 @@ namespace PipelineActors.Actors {
 
             case TemperatureUpdated m:
                Stash.Stash();
-               Become( EvaluatingWithRequest );
+               Become( EvaluatingWithEvaluationPending );
                break;
 
             case SafetyEvaluationResult m:
@@ -60,7 +60,7 @@ namespace PipelineActors.Actors {
          }
       }
 
-      private void EvaluatingWithRequest( object message ) {
+      private void EvaluatingWithEvaluationPending( object message ) {
          switch ( message ) {
             case SubscribeToNotificationsRequest m:
                AddSubscriber( m );

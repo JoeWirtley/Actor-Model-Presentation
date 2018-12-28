@@ -8,7 +8,7 @@ namespace PipelineActors.Actors {
    public class TemperatureSensorActor: UntypedActor {
       private readonly SensorIdentifier _id;
       private double _temperature;
-      private DateTime _updated;
+      private DateTime readingTime;
       private readonly HashSet<IActorRef> _subscribers;
 
       public TemperatureSensorActor( SensorIdentifier id ) {
@@ -24,13 +24,13 @@ namespace PipelineActors.Actors {
 
             case UpdateTemperatureRequest m:
                _temperature = m.Temperature;
-               _updated = m.Updated;
+               readingTime = m.ReadingTime;
                Sender.Tell( new UpdateTemperatureResponse( m.CorrelationId ) );
                UpdateSubscribers();
                break;
 
             case QueryTemperatureRequest m:
-               Sender.Tell( new QueryTemperatureResponse( m.CorrelationId, _id, _temperature, _updated ) );
+               Sender.Tell( new QueryTemperatureResponse( m.CorrelationId, _id, _temperature, readingTime ) );
                break;
 
             case SubscribeToUpdatesRequest m:
@@ -41,7 +41,7 @@ namespace PipelineActors.Actors {
       }
 
       private void UpdateSubscribers() {
-         TemperatureUpdated updateMessage = new TemperatureUpdated( _id, _temperature, _updated );
+         TemperatureUpdated updateMessage = new TemperatureUpdated( _id, _temperature, readingTime );
          foreach ( var subscriber in _subscribers ) {
             subscriber.Tell( updateMessage  );
          }

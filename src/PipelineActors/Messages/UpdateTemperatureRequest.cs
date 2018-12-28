@@ -5,12 +5,12 @@ namespace PipelineActors.Messages {
    public class UpdateTemperatureRequest {
       public CorrelationId CorrelationId { get; }
       public double Temperature { get; }
-      public DateTime Updated { get; }
+      public DateTime ReadingTime { get; }
 
-      public UpdateTemperatureRequest( CorrelationId correlationID, double temperature, DateTime updated ) {
+      public UpdateTemperatureRequest( CorrelationId correlationID, double temperature, DateTime readingTime ) {
          CorrelationId = correlationID;
          Temperature = temperature;
-         Updated = updated;
+         ReadingTime = readingTime;
       }
    }
 }

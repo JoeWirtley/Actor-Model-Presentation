@@ -6,13 +6,13 @@ namespace PipelineActors.Messages {
       public SensorIdentifier SensorId { get; }
       public CorrelationId CorrelationId { get; }
       public double Temperature { get; }
-      public DateTime Updated { get; }
+      public DateTime ReadingTime { get; }
 
-      public QueryTemperatureResponse( CorrelationId correlationID, SensorIdentifier sensorId, double temperature, DateTime updated ) {
+      public QueryTemperatureResponse( CorrelationId correlationID, SensorIdentifier sensorId, double temperature, DateTime readingTime ) {
          SensorId = sensorId;
          CorrelationId = correlationID;
          Temperature = temperature;
-         Updated = updated;
+         ReadingTime = readingTime;
       }
    }
 }

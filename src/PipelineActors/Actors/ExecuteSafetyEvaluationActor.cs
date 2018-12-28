@@ -46,7 +46,7 @@ namespace PipelineActors.Actors {
          var temperatures =
          _results.ToDictionary( 
             item => item.Key, 
-            item => new SafetyEvaluationResult.Temperature( item.Value.Temperature, item.Value.Updated ) )
+            item => new SafetyEvaluationResult.Temperature( item.Value.Temperature, item.Value.ReadingTime ) )
             .ToImmutableDictionary();
 
          if ( _results.Values.Any( response => response.Temperature > 200 ) ) {

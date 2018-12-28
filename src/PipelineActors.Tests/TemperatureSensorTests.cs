@@ -34,9 +34,9 @@ namespace PipelineActors.Tests {
 
          CorrelationId correlationId = new CorrelationId();
          double temperature = 98.4;
-         DateTime updated = DateTime.Now;
+         DateTime readingTime = DateTime.Now;
 
-         sensor.Tell( new UpdateTemperatureRequest( correlationId, temperature, updated ), probe.Ref );
+         sensor.Tell( new UpdateTemperatureRequest( correlationId, temperature, readingTime ), probe.Ref );
 
          var received = probe.ExpectMsg<UpdateTemperatureResponse>();
 
@@ -52,9 +52,9 @@ namespace PipelineActors.Tests {
 
          CorrelationId expectedCorrelationId = new CorrelationId();
          double expectedTemperature = 98.4;
-         DateTime expectedUpdated = DateTime.Now;
+         DateTime expectedReadingTime = DateTime.Now;
 
-         sensor.Tell( new UpdateTemperatureRequest( new CorrelationId(), expectedTemperature, expectedUpdated ) );
+         sensor.Tell( new UpdateTemperatureRequest( new CorrelationId(), expectedTemperature, expectedReadingTime ) );
          sensor.Tell( new QueryTemperatureRequest( expectedCorrelationId ), probe.Ref );
 
          var received = probe.ExpectMsg<QueryTemperatureResponse>();
@@ -62,7 +62,7 @@ namespace PipelineActors.Tests {
          received.CorrelationId.Should().Be( expectedCorrelationId );
          received.SensorId.Should().Be( expectedIdentifier );
          received.Temperature.Should().Be( 98.4 );
-         received.Updated.Should().Be( expectedUpdated );
+         received.ReadingTime.Should().Be( expectedReadingTime );
       }
 
       [Test]
@@ -88,17 +88,17 @@ namespace PipelineActors.Tests {
          var sensor = CreateTestSensor( expectedIdentifier );
 
          double expectedTemperature = 100.2;
-         DateTime expectedUpdated = DateTime.Now;
+         DateTime expectedReadingTime = DateTime.Now;
 
          sensor.Tell( new SubscribeToUpdatesRequest( new CorrelationId() ), probe );
          probe.ExpectMsg<SubscribeToUpdatesResponse>();
 
-         sensor.Tell( new UpdateTemperatureRequest( new CorrelationId(), expectedTemperature, expectedUpdated ) );
+         sensor.Tell( new UpdateTemperatureRequest( new CorrelationId(), expectedTemperature, expectedReadingTime ) );
 
          var received = probe.ExpectMsg<TemperatureUpdated>();
          received.SensorId.Should().Be( expectedIdentifier );
          received.Temperature.Should().Be( expectedTemperature );
-         received.Updated.Should().Be( expectedUpdated );
+         received.ReadingTime.Should().Be( expectedReadingTime );
       }
 
 

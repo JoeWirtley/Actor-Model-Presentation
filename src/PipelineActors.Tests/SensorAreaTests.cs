@@ -70,14 +70,14 @@ namespace PipelineActors.Tests {
          probe.ExpectMsg<SubscribeToUpdatesResponse>();
 
          double expectedTemperature = 98.4;
-         DateTime expectedUpdated = DateTime.Now;
+         DateTime expectedReadingTime = DateTime.Now;
 
-         sensor.Tell( new UpdateTemperatureRequest( new CorrelationId(), expectedTemperature, expectedUpdated )  );
+         sensor.Tell( new UpdateTemperatureRequest( new CorrelationId(), expectedTemperature, expectedReadingTime )  );
 
          var received = probe.ExpectMsg<TemperatureUpdated>();
          received.SensorId.Should().Be( sensorId );
          received.Temperature.Should().Be( expectedTemperature );
-         received.Updated.Should().Be( expectedUpdated );
+         received.ReadingTime.Should().Be( expectedReadingTime );
       }
 
       [Test]

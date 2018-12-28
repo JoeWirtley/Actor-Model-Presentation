@@ -20,7 +20,7 @@ namespace PipelineDemo {
 
          WriteLine( safetyNotification.Message + "\n" );
 
-         WriteLine("Sensor ID\tTemp\tUpdated");
+         WriteLine("Sensor ID\tTemp\tReading Time");
          foreach ( var temperature in safetyNotification.Temperatures.OrderBy( x => x.Key.ToString() ) ) {
             Write( $"{temperature.Key}\t" );
             double value = temperature.Value.Value;

@@ -16,7 +16,7 @@ namespace PipelineDemo {
       public SensorDataSource( int sensorId, IActorRef sensorArea) {
          _sensorId = sensorId;
          _sensorArea = sensorArea;
-         _randomTemperatureGenerator = new Random();
+         _randomTemperatureGenerator = new Random( DateTime.Now.Millisecond + sensorId );
       }
 
       public async Task Start( TimeSpan updateEveryMilliseconds) {
