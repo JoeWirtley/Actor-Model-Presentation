@@ -87,7 +87,7 @@ namespace PipelineActors.Actors {
                subscriber.Tell( warning );
             }
          }
-         Become( OnReceive );
+         Become( Idle );
          Stash.UnstashAll();
       }
 
