@@ -28,7 +28,7 @@ namespace PipelineDemo {
 
 
       private void UpdateTemperature( object sender ) {
-         var randomTemperature = _randomTemperatureGenerator.NextDouble() * 250;
+         var randomTemperature = _randomTemperatureGenerator.NextDouble() * 220;
          _sensor.Ask( new UpdateTemperatureRequest(  new CorrelationId(), randomTemperature, DateTime.Now ) );
       }
    }
